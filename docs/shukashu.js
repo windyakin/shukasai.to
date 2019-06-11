@@ -6,7 +6,7 @@
     };
   
     var result = shukashu[getRandom(shukashu.length)] + shukashu[getRandom(shukashu.length)] + shukashu[getRandom(shukashu.length)];
-    var tweetUrl = 'https://twitter.com/intent/tweet?url=http://shukasai.to/&text=' + encodeURIComponent(result);
+    var tweetUrl = 'https://twitter.com/intent/tweet?url=https://shukasai.to/&text=' + encodeURIComponent(result);
   
     document.getElementById('result').textContent = result;
     document.getElementById('tweet').setAttribute('href', tweetUrl);
