@@ -14,8 +14,18 @@ const reset = () => {
 const finish = () => {
   finished.value = true
 }
-</script>
 
+const isVideo = computed(() => {
+  switch (result.value.join('')) {
+    case 'しゅかしゅー':
+      return 'R3pd6h_wU6Y'
+    case 'しゅしゅしゅ':
+      return 'YWYDFT-IAtA'
+    default:
+      return false
+  }
+});
+</script>
 <template>
   <div class="container">
     <div class="row">
@@ -32,6 +42,15 @@ const finish = () => {
               @finish="finish"
               class="slot-machine"
             ></SlotMachine>
+            <iframe
+              v-if="isVideo"
+              class="media"
+              :src="`https://www.youtube-nocookie.com/embed/${isVideo}?controls=0`"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope;"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
           </div>
         </div>
       </div>
@@ -55,3 +74,16 @@ const finish = () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.media {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: var(--bs-card-border-radius);
+}
+</style>
