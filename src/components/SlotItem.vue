@@ -1,8 +1,8 @@
 <template>
   <div class="slot">
-    <div class="slot-display">{{ currentItem }}</div>
+    <div class="slot-display">{{ display }}</div>
     <div class="slot-button">
-      <button @click="stop" :disabled="!isSpinning" class="btn btn-secondary">
+      <button @click="stop" :disabled="!isSpinning" class="btn btn-outline-success">
         STOP
       </button>
     </div>
@@ -10,34 +10,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, onBeforeUnmount, watch, defineProps, defineEmits } from 'vue';
+import { ref, onMounted, onBeforeUnmount, computed, watch, defineProps, defineEmits } from 'vue';
 
 const props = defineProps<{
   items: string[];
-  modelValue?: string;
+  modelValue: string;
 }>();
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void;
 }>();
 
-const currentItem = ref(props.modelValue ?? props.items[0]);
-const isSpinning = ref(false);
+const display = ref(props.modelValue);
+const currentIndex = ref(0);
+const isSpinning = computed(() => { 
+  return props.modelValue === '';
+});
 let intervalId: number;
 
-function spin() {
-  isSpinning.value = true;
+const spin = () => {
+  currentIndex.value = Math.floor(Math.random() * props.items.length);
   intervalId = window.setInterval(() => {
-    const currentIndex = props.items.indexOf(currentItem.value);
-    const nextIndex = (currentIndex + 1) % props.items.length;
-    currentItem.value = props.items[nextIndex];
+    currentIndex.value = (currentIndex.value + 1) % props.items.length;
+    display.value = props.items[currentIndex.value];
   }, 50);
 }
 
-function stop() {
-  emit('update:modelValue', currentItem.value);
+const stop = () => {
+  emit('update:modelValue', display.value);
   clearInterval(intervalId);
-  isSpinning.value = false;
 }
 
 onMounted(() => {
@@ -48,9 +49,7 @@ onBeforeUnmount(() => {
   clearInterval(intervalId);
 });
 
-watch(() => props.items, () => {
-  currentItem.value = props.items[0];
-  emit('update:modelValue', currentItem.value);
+watch(() => isSpinning.value, () => {
   if (isSpinning.value) {
     clearInterval(intervalId);
     spin();
