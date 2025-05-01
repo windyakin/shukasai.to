@@ -1,8 +1,8 @@
 <template>
   <div class="slot-machine-container">
-    <SlotItem v-for="(_, index) in selectedItem" :key="index"
+    <SlotItem v-for="(_, index) in modelValue" :key="index"
       :items="items"
-      v-model="selectedItem[index]"
+      v-model="modelValue[index]"
       class="slot-machine-items"
     ></SlotItem>
   </div>
@@ -10,19 +10,22 @@
 
 <script setup lang="ts">
 import SlotItem from './SlotItem.vue'
-import { ref, watchEffect } from 'vue'
+import { watchEffect } from 'vue'
 
-const selectedItem = ref(['', '', '']);
+const props = defineProps<{
+  modelValue: string[];
+}>();
+
 const items = ['しゅ', 'か', 'しゅー'];
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: string): void;
+  (e: 'update:modelValue', value: string[]): void;
   (e: 'finish'): void;
 }>();
 
 watchEffect(() => {
-  emit('update:modelValue', selectedItem.value.join(''));
-  if (selectedItem.value.every((item) => item !== '')) {
+  emit('update:modelValue', props.modelValue);
+  if (props.modelValue.every((item) => item !== '')) {
     emit('finish');
   }
 });

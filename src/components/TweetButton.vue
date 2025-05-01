@@ -8,8 +8,10 @@
 import { defineProps, computed } from 'vue';
 
 const props = defineProps<{
-  modelValue?: string;
+  modelValue: string[];
 }>();
 
-const tweetUrl = computed(() => `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${props.modelValue}`)}&url=${window.location.href}`);
+const tweetUrl = computed(
+  () => `https://twitter.com/intent/tweet?text=${encodeURIComponent(props.modelValue.join(''))}&url=${window.location.href}`
+);
 </script>
