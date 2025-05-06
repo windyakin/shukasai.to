@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import SlotMachine from './components/SlotMachine.vue'
-import TweetButton from './components/TweetButton.vue'
+import ShareButton from './components/ShareButton.vue'
 
 const result = ref<string[]>(['', '', ''])
 const finished = ref(false)
@@ -58,9 +58,9 @@ const isVideo = computed(() => {
     <div class="row">
       <div v-if="finished" class="col my-2 text-center">
         <div class="d-flex justify-content-center align-items-center" style="gap: 0.5rem;">
-          <TweetButton
+          <ShareButton
             v-model="result"
-          ></TweetButton>
+          ></ShareButton>
           <button class="btn btn-outline-secondary" @click="reset">
             リセット
           </button>
